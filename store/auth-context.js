@@ -1,4 +1,6 @@
-import { createContext, useReducer, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext({
   token: "",
@@ -7,17 +9,17 @@ export const AuthContext = createContext({
   logout: () => {},
 });
 
-function screenReducer(state, action) {}
-
 function AuthContextProvider({ children }) {
   const [authToken, setAuthToken] = useState();
 
   function authenticate(token) {
     setAuthToken(token);
+    AsyncStorage.setItem("token", token);
   }
 
   function logout() {
     setAuthToken(null);
+    AsyncStorage.removeItem("token");
   }
 
   const value = {
